@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link rel="stylesheet" href="style/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style/css/style.css">
+</head>
+<body>
+    <!-- regestration  section-->
+    <div class="container mb-5">
+        <br><h3>Registration</h3><br>
+            <input type="text" name="name" id="nameInp" class="form-control m-3" placeholder="Name">
+            <input type="text" name="user" id="userInp" class="form-control m-3" placeholder="User Name">
+            <input type="email" name="email" id="emailInp" class="form-control m-3" placeholder="Email">
+            <input type="password" name="password" id="passInp" class="form-control m-3" placeholder="Password">
+            <button class="form-control m-3 btn btn-success" id="sub_btn">Sign up</button>
+            <a href="login.html" class="form-control badge text-bg-secondary m-3"> Already have a account?</a>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- bootstrap script -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+
+
+
+    <!-- firebase authentication -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+      
+       
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyDOM1boMigBcIJCP86VE4Hd-i6xoJBCU3k",
+          authDomain: "test-59d32.firebaseapp.com",
+          databaseURL: "https://test-59d32-default-rtdb.firebaseio.com",
+          projectId: "test-59d32",
+          storageBucket: "test-59d32.appspot.com",
+          messagingSenderId: "435069596308",
+          appId: "1:435069596308:web:fad9992bf18f5142603a81"
+        };
+      
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+
+        import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js";
+
+        const db = getDatabase();
+
+        // the referance
+        const name = document.getElementById('nameInp');
+        const email = document.getElementById('emailInp');
+        const username = document.getElementById('userInp');
+        const pass = document.getElementById('passInp');
+        const submit = document.getElementById('sub_btn');
+
+
+        // validation
+
+        function isEmptySpaces(str){
+            return str === null || str.match(/^ *$/) !== null;
+        }
+
+
+        function validation(){
+            let nameregex = /^[a-zA-Z]+$/;
+            let emailregex= /^[a-zA-Z0-9]+@(gmail|yahoo)\.com$/;
+            let userregex= /^[a-zA-Z0-9]{5,}$/;
+
+            if(isEmptySpaces(name.value) || isEmptySpaces(email.value) || isEmptySpaces(username.value) || isEmptySpaces(pass.value)){
+                alert("All field should be filled!");
+                return false;
+            }
+
+            if(!nameregex.test(name.value)){
+                alert("Name Should contain only alphabets!");
+                return false;
+            }
+            if(!emailregex.test(email.value)){
+                alert("Invalid Email!");
+                return false;
+            }
+            if(!userregex.test(username.value)){
+                alert("Invalid user name!");
+                return false;
+            }
+            return true;
+        }
+
+
+        // regester user to firebase
+        function RegisterUser(){
+            if(!validation()){
+                return;
+            }
+
+            const dbRef = ref(db);
+
+            get(child(dbRef, "UserList/"+ username.value)).then((snapshot)=>{
+                if(snapshot.exists()){
+                    alert("Account Already Exists!");
+                }
+                else{
+                    set(ref(db, "UserList/"+ username.value),{
+                        fullname: name.value,
+                        email: email.value,
+                        username: username.value,
+                        password: encPass()
+                    })
+                    .then(()=>{
+                        alert("User added Successfully!");
+                    })
+                    .catch((error)=>{
+                        alert("error"+ error);
+                    })
+                }
+            });
+        }
+
+        // encription
+        function encPass(){
+            var pass12 = CryptoJS.AES.encrypt(pass.value, pass.value);
+            return pass12.toString();
+        }
+
+
+
+        // event listener
+        submit.addEventListener('click', RegisterUser);
+      
+
+
+      </script>
+    
+</body>
+</html>

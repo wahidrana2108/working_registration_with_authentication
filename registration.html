@@ -10,17 +10,64 @@
     <link rel="stylesheet" href="style/css/style.css">
 </head>
 <body>
-    <!-- regestration  section-->
-    <div class="container mb-5">
-        <br><h3>Registration</h3><br>
-            <input type="text" name="name" id="nameInp" class="form-control m-3" placeholder="Name">
-            <input type="text" name="user" id="userInp" class="form-control m-3" placeholder="User Name">
-            <input type="email" name="email" id="emailInp" class="form-control m-3" placeholder="Email">
-            <input type="password" name="password" id="passInp" class="form-control m-3" placeholder="Password">
-            <button class="form-control m-3 btn btn-success" id="sub_btn">Submit</button>
-            <a href="login.html" class="form-control badge text-bg-secondary m-3"> Already have a account?</a>
-    </div>
+  <!-- registration form -->
+    <div class="container">
+      <div class="card-body">
+        <form><br><br>
+          <h2>Registration</h2><br>
+          <div class="black-line"></div><br><br>
+            <div class="row">
+              
+              <!-- <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="text" class="form-control" id="nameInp" placeholder="Full Name">
+              </div>
+              <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="text" class="form-control" id="userInp" placeholder="User Name">
+              </div> -->
+              <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="email" class="form-control" id="emailInp" placeholder="Email">
+              </div>
+              <!-- <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="tel" class="form-control" id="" placeholder="Mobile Number">
+              </div>
+              <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="tel" class="form-control" id="" placeholder="Confirm Mobile">
+              </div> -->
+              <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="password" class="form-control" id="passInp" placeholder="Enter Password">
+              </div>
+              <!-- <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="password" class="form-control" id="" placeholder="Confirm Password">
+              </div>
+              <div class="mb-3  col-xl-6 col-lg-12">
+                <select name="" id="" class="form-control">
+                  <option value="Select the verification method" disabled selected>Select the verification method</option>
+                  <option value="NID">NID</option>
+                  <option value="Passport">Passport</option>
+                </select>
+              </div>
+              <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="number" class="form-control" id="" placeholder="Identification Number">
+              </div>
+              <div class="mb-3  col-xl-6 col-lg-12">
+                <input type="number" class="form-control" id="" placeholder="Post Code">
+              </div>
+              <div class=" col-12">
+                <input type="text" class="form-control" id="" placeholder="Address">
+              </div> <br><br>  -->
+            </div><br>
+            <div class="col-12 row">
+              <div class="col-6">
+                <button type="submit" class="btn btn-success col-6" id="sub_btn">Submit</button>
+              </div>
 
+              <!-- <div class="col-6">
+                <a class="orange-text col-6" href="login.html"> Already Registered?</a>
+              </div> -->
+            </div>
+          </form>
+    </div>
+    </div>
 
 
 
@@ -38,114 +85,79 @@
 
 
 
+
     <!-- firebase authentication -->
+
     <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
-      
-       
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-          apiKey: "AIzaSyDOM1boMigBcIJCP86VE4Hd-i6xoJBCU3k",
-          authDomain: "test-59d32.firebaseapp.com",
-          databaseURL: "https://test-59d32-default-rtdb.firebaseio.com",
-          projectId: "test-59d32",
-          storageBucket: "test-59d32.appspot.com",
-          messagingSenderId: "435069596308",
-          appId: "1:435069596308:web:fad9992bf18f5142603a81"
-        };
-      
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-
-        import { getDatabase, ref, set, child, get } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js";
-
-        const db = getDatabase();
-
-        // the referance
-        const name = document.getElementById('nameInp');
-        const email = document.getElementById('emailInp');
-        const username = document.getElementById('userInp');
-        const pass = document.getElementById('passInp');
-        const submit = document.getElementById('sub_btn');
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
+      import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-auth.js";
+      import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-database.js";
 
 
-        // validation
-
-        function isEmptySpaces(str){
-            return str === null || str.match(/^ *$/) !== null;
-        }
-
-
-        function validation(){
-            let nameregex = /^[a-zA-Z]+$/;
-            let emailregex= /^[a-zA-Z0-9]+@(gmail|yahoo)\.com$/;
-            let userregex= /^[a-zA-Z0-9]{5,}$/;
-
-            if(isEmptySpaces(name.value) || isEmptySpaces(email.value) || isEmptySpaces(username.value) || isEmptySpaces(pass.value)){
-                alert("All field should be filled!");
-                return false;
-            }
-
-            if(!nameregex.test(name.value)){
-                alert("Name Should contain only alphabets!");
-                return false;
-            }
-            if(!emailregex.test(email.value)){
-                alert("Invalid Email!");
-                return false;
-            }
-            if(!userregex.test(username.value)){
-                alert("Invalid user name!");
-                return false;
-            }
-            return true;
-        }
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+    
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyDOM1boMigBcIJCP86VE4Hd-i6xoJBCU3k",
+        authDomain: "test-59d32.firebaseapp.com",
+        databaseURL: "https://test-59d32-default-rtdb.firebaseio.com",
+        projectId: "test-59d32",
+        storageBucket: "test-59d32.appspot.com",
+        messagingSenderId: "435069596308",
+        appId: "1:435069596308:web:fad9992bf18f5142603a81"
+      };
+    
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth();
+      const database = getDatabase(app);
 
 
-        // regester user to firebase
-        function RegisterUser(){
-            if(!validation()){
-                return;
-            }
 
-            const dbRef = ref(db);
 
-            get(child(dbRef, "UserList/"+ username.value)).then((snapshot)=>{
-                if(snapshot.exists()){
-                    alert("Account Already Exists!");
-                }
-                else{
-                    set(ref(db, "UserList/"+ username.value),{
-                        fullname: name.value,
-                        email: email.value,
-                        username: username.value,
-                        password: encPass()
-                    })
-                    .then(()=>{
-                        alert("User added Successfully!");
-                    })
-                    .catch((error)=>{
-                        alert("error"+ error);
-                    })
-                }
+      sub_btn.addEventListener('click',(e) => {
+
+        // initialize variables
+        var email = document.getElementById('emailInp').value;
+        var password = document.getElementById('passInp').value;
+
+        createUserWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            // Signed in 
+            const user = userCredential.user;
+            // ...
+            set(ref(database, 'users/' + user.uid), {
+              email: email,
+              password: password
+            })
+            .then(() => {
+              // Data saved successfully!
+              alert("USER CREATED SUCCESSFULLY!");
+            })
+            .catch((error) => {
+              // The write failed...
+              alert(error);
             });
-        }
 
-        // encription
-        function encPass(){
-            var pass12 = CryptoJS.AES.encrypt(pass.value, pass.value);
-            return pass12.toString();
-        }
-
-
-
-        // event listener
-        submit.addEventListener('click', RegisterUser);
-      
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+            alert(errorMessage);
+          });
+      } )
 
 
-      </script>
+
+
+
+
+
+
+    </script>
     
 </body>
 </html>
